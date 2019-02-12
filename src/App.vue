@@ -14,7 +14,8 @@
         <span class="mr-2">Latest Release</span>
       </v-btn>
     </v-toolbar> -->
-
+    <navbar/>
+    <page-header/>
     <v-content>
       <router-view/>
     </v-content>
@@ -22,12 +23,16 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+// import HelloWorld from './components/HelloWorld'
+import PageHeader from "@/components/Header.vue";
+import Navbar from "@/components/Navbar.vue";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // HelloWorld,
+    PageHeader,
+    Navbar
   },
   data () {
     return {

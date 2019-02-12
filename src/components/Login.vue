@@ -9,25 +9,22 @@
             </div>
           </v-card-title>
           <v-card-text>
-            <!-- <v-form ref="form" v-model="valid" lazy-validation> -->
-              <!-- <v-text-field
+            <v-form ref="form" v-model='valid' lazy-validation>
+              <v-text-field
                 type="email"
                 v-model="email"
                 label="Your E-mail"
                 required
               ></v-text-field>
-
               <v-text-field
                 type="password"
                 v-model="password"
                 label="Your Password"
                 required
               ></v-text-field>
-              <v-btn round color="light-green accent-4" dark>Login</v-btn><br>
-              or
-              <br> -->
-              <v-btn @click="login" round color="error"><v-icon left>mdi-google-plus</v-icon>Login With Your Google Account</v-btn>
-            <!-- </v-form> -->
+              <v-btn round color="light-green accent-4" dark @click="login">Login</v-btn>
+              <!-- <v-btn round color="error" v-google-signin-button="clientId"><v-icon left>mdi-google-plus</v-icon>Login With Your Google Account</v-btn> -->
+            </v-form>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -37,26 +34,73 @@
 
 <script>
 import LoginService from '@/services/LoginService'
+// import GoogleSignInButton from 'vue-google-signin-button-directive'
+
+// export default {
+//   directives: {
+//     GoogleSignInButton
+//   },
+//   data: () => ({
+//     clientId: '626403788659-4v0ck89ok4l6m61sqcqvhtcl6bpqj4ja.apps.googleusercontent.com'
+//   }),
+//   methods: {
+//     OnGoogleAuthSuccess (user) {
+//       // Receive the idToken and make your magic with the backend
+//       var idUser = user.getId()
+//       var emailUser = user.getEmail()
+//       var nameUser = user.getName()
+//       var photoUser = user.getImageUrl()
+
+//       // const cek = LoginService.cekID({_id: idUser})
+      
+//       this.$store.dispatch('setID', idUser)
+//       this.$store.dispatch('setEmail', emailUser)
+//       this.$store.dispatch('setName', nameUser)
+//       this.$store.dispatch('setProfilePicture', photoUser)
+//       this.$store.dispatch('', )
+//       this.$store.dispatch('', )
+//       // console.log('id:' + idUser)
+//       // console.log('email:' + emailUser)
+//       // console.log('name:' + nameUser)
+//       // console.log('photo:' + photoUser)
+//       console.log(cek)
+//     },
+//     OnGoogleAuthFail (error) {
+//       console.log(error)
+//     }
+//   }
+// }
 export default {
   data: () => ({
-    google: null,
-    valid: true,
     email: '',
-    // emailRules: [
-    // v => /.+@.+/.test(v) || 'E-mail must be valid'
-    // ],
-    password: ''
+    password: '',
+    error:'',
+    valid: true
   }),
   methods: {
-    async login() {
-      try {
-        this.google = (await LoginService.loginGoogle()).data
-        console.log('google',this.google)
-      } catch(error) {
-        this.error = 'The login information was incorrect'
-      } 
+    async login(){
+      try{
+        const response = await LoginService.login({
+          email: this.email,
+          password: this.password,
+        })
+        console.log(response.data.data.privilege)
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setPrivilege', response.data.data.privilege)
+        this.$store.dispatch('setId', response.data.data._id)
+        this.$store.dispatch('setEmail', response.data.data.email)
+        this.$store.dispatch('setName', response.data.data.name)
+        this.$router.push({name:'dashboard'})
+        // this.$store.dispatch('setAddress', response.data.address)
+        // this.$router.push({
+        //   name: 'dashboard'
+        // })
+      }
+      catch(error){
+        this.error = error.response.data.error
+      }
     }
-  }
+  },
 }
 </script>
 
