@@ -41,11 +41,12 @@
         <v-flex>
           <div class="white elevation-2">
             <div class="pl-4 pr-4 pt-2 pb-2">
-              <h1>Daftar Patriot</h1>
+              <h1>Data Keluarga Miskin</h1>
             </div>
             <div class="pl-4 pr-4 pt-4 pb-4">
               <v-card>
                 <v-card-title>
+                  <tambah-data></tambah-data>
                   <v-spacer></v-spacer>
                   <v-text-field
                     v-model="search"
@@ -67,10 +68,7 @@
                     <td class="text-xs-left">{{ props.item.fat }}</td>
                     <td class="text-xs-left">{{ props.item.carbs }}</td>
                     <td class="text-xs-left">{{ props.item.protein }}</td>
-                    <td class="text-xs-left">{{ props.item.iron }}</td>
-                    <td class="text-xs-left">{{ props.item.desa }}</td>
-                    <td class="text-xs-left" v-if="props.item.status===''"><v-btn color="info">Verifikasi</v-btn></td>
-                    <td class="text-xs-left" v-else>{{ props.item.status }}</td>
+                    <td class="text-xs-left"><a @click="">Lihat Detail</a></td>
                     <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->
                   </template>
                   <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -87,41 +85,38 @@
 </template>
 
 <script>
+import TambahData from "@/components/TambahDataKeluarga";
   export default {
     data: () => ({
       headers: [
           { text: 'No', sortable: false, value: '' },
-          { text: 'Nama Patriot', value: 'name' },
-          { text: 'Email', value: 'email' },
-          { text: 'Provinsi', value: 'prov' },
-          { text: 'Kabupaten', value: 'kab' },
-          { text: 'Kecamatan', value: 'kec' },
-          { text: 'Desa', value: 'desa' },
-          { text: 'Status', sortable: false, value: 'action' }
+          { text: 'Nama Kepala Rumah Tangga', value: 'name' },
+          { text: 'Alamat', value: 'email' },
+          { text: 'Taraf', value: 'prov' },
+          { text: 'Patriot', value: 'kab' },
+          // { text: 'Kecamatan', value: 'kec' },
+          // { text: 'Desa', value: 'desa' },
+          // { text: 'Action', sortable: false, value: 'action' }
         ],
         desserts: [
           {
             name: '1',
-            calories: 'Rendy',
-            fat: 'rend@rendy.id',
-            carbs: 'DKI JAKARTA',
-            protein: 'JAKARTA TIMUR',
-            iron: 'PULO GADUNG',
-            desa: 'SUKARAJA',
-            status: ''
+            calories: 'Supriyadi',
+            fat: 'Jl. Sukacita',
+            carbs: 'Taraf 1',
+            protein: 'Rendy',
+            // iron: '1%'
           },
           {
             name: '2',
-            calories: 'Aisyah',
-            fat: 'aaa@aisyah.id',
-            carbs: 'JAWA BARAT',
-            protein: 'KABUPATEN BOGOR',
-            iron: 'DRAMAGA',
-            desa: 'SUKATANI',
-            status: 'Sudah Terverifikasi'
+            calories: 'Anton',
+            fat: 'Jl. Kenangan',
+            carbs: 'Taraf 2',
+            protein: 'Aisyah',
+            // iron: '1%'
           },
           // {
-          //   name: 'Eclair',
+          //   name: '3',
           //   calories: 262,
           //   fat: 16.0,
           //   carbs: 23,
@@ -129,7 +124,7 @@
           //   iron: '7%'
           // },
           // {
-          //   name: 'Cupcake',
+          //   name: '4',
           //   calories: 305,
           //   fat: 3.7,
           //   carbs: 67,
@@ -137,7 +132,7 @@
           //   iron: '8%'
           // },
           // {
-          //   name: 'Gingerbread',
+          //   name: '5',
           //   calories: 356,
           //   fat: 16.0,
           //   carbs: 49,
@@ -145,7 +140,7 @@
           //   iron: '16%'
           // },
           // {
-          //   name: 'Jelly bean',
+          //   name: '6',
           //   calories: 375,
           //   fat: 0.0,
           //   carbs: 94,
@@ -153,7 +148,7 @@
           //   iron: '0%'
           // },
           // {
-          //   name: 'Lollipop',
+          //   name: '7',
           //   calories: 392,
           //   fat: 0.2,
           //   carbs: 98,
@@ -161,7 +156,7 @@
           //   iron: '2%'
           // },
           // {
-          //   name: 'Honeycomb',
+          //   name: '8',
           //   calories: 408,
           //   fat: 3.2,
           //   carbs: 87,
@@ -169,7 +164,7 @@
           //   iron: '45%'
           // },
           // {
-          //   name: 'Donut',
+          //   name: '9',
           //   calories: 452,
           //   fat: 25.0,
           //   carbs: 51,
@@ -177,7 +172,7 @@
           //   iron: '22%'
           // },
           // {
-          //   name: 'KitKat',
+          //   name: '10',
           //   calories: 518,
           //   fat: 26.0,
           //   carbs: 65,
@@ -185,9 +180,12 @@
           //   iron: '6%'
           // }
         ],
-      dialog: false,
+      // dialog: false,
       // drawer: null,
     }),
+    components: {
+      TambahData
+    },
     props: {
       source: String
     }

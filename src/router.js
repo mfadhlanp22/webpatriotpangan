@@ -3,6 +3,8 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import VerPatriot from "./views/VerPatriot.vue";
+import VerDonatur from "./views/VerDonatur.vue";
+import DataKeluarga from "./views/DataKeluarga.vue";
 
 Vue.use(Router);
 
@@ -40,6 +42,16 @@ export default new Router({
       path: "/verifikasi/patriot",
       name: "verPatriot",
       component: VerPatriot
+    },
+    {
+      path: "/verifikasi/donatur",
+      name: "verDonatur",
+      component: VerDonatur
+    },
+    {
+      path: "/dataKeluarga",
+      name: "dataKeluargaMiskin",
+      component: DataKeluarga
     }
   ]
 });

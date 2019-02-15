@@ -10,7 +10,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "vue": "^2.5.21",
-    "vue-google-signin-button": "^1.0.2",
     "vue-google-signin-button-directive": "^1.0.2",
     "vue-router": "^3.0.1",
     "vuetify": "^1.3.0",

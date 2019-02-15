@@ -41,7 +41,7 @@
         <v-flex>
           <div class="white elevation-2">
             <div class="pl-4 pr-4 pt-2 pb-2">
-              <h1>Daftar Patriot</h1>
+              <h1>Daftar Donatur</h1>
             </div>
             <div class="pl-4 pr-4 pt-4 pb-4">
               <v-card>
@@ -66,11 +66,8 @@
                     <td class="text-xs-left">{{ props.item.calories }}</td>
                     <td class="text-xs-left">{{ props.item.fat }}</td>
                     <td class="text-xs-left">{{ props.item.carbs }}</td>
-                    <td class="text-xs-left">{{ props.item.protein }}</td>
-                    <td class="text-xs-left">{{ props.item.iron }}</td>
-                    <td class="text-xs-left">{{ props.item.desa }}</td>
-                    <td class="text-xs-left" v-if="props.item.status===''"><v-btn color="info">Verifikasi</v-btn></td>
-                    <td class="text-xs-left" v-else>{{ props.item.status }}</td>
+                    <td class="text-xs-left" v-if="props.item.protein===''"><v-btn color="info">Verifikasi</v-btn></td>
+                    <td class="text-xs-left" v-else>{{ props.item.protein }}</td>
                     <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->
                   </template>
                   <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -90,35 +87,31 @@
   export default {
     data: () => ({
       headers: [
-          { text: 'No', sortable: false, value: '' },
-          { text: 'Nama Patriot', value: 'name' },
+        { text: 'No', sortable: false, value: '' },
+          { text: 'Nama Donatur', value: 'name' },
           { text: 'Email', value: 'email' },
-          { text: 'Provinsi', value: 'prov' },
-          { text: 'Kabupaten', value: 'kab' },
-          { text: 'Kecamatan', value: 'kec' },
-          { text: 'Desa', value: 'desa' },
-          { text: 'Status', sortable: false, value: 'action' }
+          { text: 'Alamat', value: 'prov' },
+          { text: 'Status', sortable: false, value: 'kab' },
+          // { text: 'Kecamatan', value: 'kec' },
+          // { text: 'Desa', value: 'desa' },
+          // { text: 'Action', sortable: false, value: 'action' }
         ],
         desserts: [
           {
             name: '1',
-            calories: 'Rendy',
-            fat: 'rend@rendy.id',
-            carbs: 'DKI JAKARTA',
-            protein: 'JAKARTA TIMUR',
-            iron: 'PULO GADUNG',
-            desa: 'SUKARAJA',
-            status: ''
+            calories: 'Hendrawan',
+            fat: 'hendra@hendra.id',
+            carbs: 'Jl. Bata 2',
+            protein: '',
+            iron: '1%'
           },
           {
             name: '2',
-            calories: 'Aisyah',
-            fat: 'aaa@aisyah.id',
-            carbs: 'JAWA BARAT',
-            protein: 'KABUPATEN BOGOR',
-            iron: 'DRAMAGA',
-            desa: 'SUKATANI',
-            status: 'Sudah Terverifikasi'
+            calories: 'Yanti',
+            fat: 'yanyan@yanti.id',
+            carbs: 'Jl. Balok 3',
+            protein: 'Sudah Terverifikasi',
+            iron: '1%'
           },
           // {
           //   name: 'Eclair',

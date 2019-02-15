@@ -4,10 +4,14 @@
       <v-flex sm4 offset-sm4>
         <v-card>
           <v-card-title primary-title>
-            <div>
-              <h3>Login</h3>
-            </div>
+            <v-img
+              :src="require('../assets/patriot_pangan_logo_hijau.png')"
+              class="my-3"
+              contain
+              height="100"
+            ></v-img>
           </v-card-title>
+          <v-card-text class="nama_logo">Patriot Pangan</v-card-text>
           <v-card-text>
             <v-form ref="form" v-model='valid' lazy-validation>
               <v-text-field
@@ -22,7 +26,7 @@
                 label="Your Password"
                 required
               ></v-text-field>
-              <v-btn round color="light-green accent-4" dark @click="login">Login</v-btn>
+              <v-btn block color="light-green accent-4" dark @click="login">Masuk</v-btn>
               <!-- <v-btn round color="error" v-google-signin-button="clientId"><v-icon left>mdi-google-plus</v-icon>Login With Your Google Account</v-btn> -->
             </v-form>
           </v-card-text>
@@ -105,7 +109,12 @@ export default {
 </script>
 
 <style scoped>
-
+  .nama_logo {
+    font-family: 'Open Sans', sans-serif;
+    color:rgb(64, 202, 64);
+    font-weight: bold;
+    font-size: 24px;
+  }
 </style>
 
 <!--

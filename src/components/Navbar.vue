@@ -187,7 +187,7 @@
           items: null
         },
         {
-          action: "event",
+          action: "mdi-clipboard-check-outline",
           title: "Verifikasi",
           items: [
             {
@@ -196,27 +196,29 @@
             },
             {
               title: "Donatur",
-              to: "eventList"
+              to: "verDonatur"
             }
           ]
         },
         {
-          action: "store_mall_directory",
-          title: "UKM",
-          items: [
-            { 
-                title: "Produk UKM",
-                to: "ukmProduct"
-            },
-            { 
-                title: "Daftar UKM",
-                to: "ukmList"
-            },
-            { 
-                title: "Daftar Pengusaha",
-                to: "ukmListPengusaha"
-            }
-          ]
+          action: "mdi-format-list-checkbox",
+          title: "Data Keluarga Miskin",
+          to: "dataKeluargaMiskin",
+          items: null
+          // items: [
+          //   { 
+          //       title: "Produk UKM",
+          //       to: "ukmProduct"
+          //   },
+          //   { 
+          //       title: "Daftar UKM",
+          //       to: "ukmList"
+          //   },
+          //   { 
+          //       title: "Daftar Pengusaha",
+          //       to: "ukmListPengusaha"
+          //   }
+          // ]
         }
       ],
       right: null
