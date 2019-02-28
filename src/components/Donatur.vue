@@ -57,17 +57,17 @@
                 </v-card-title>
                 <v-data-table
                   :headers="headers"
-                  :items="desserts"
+                  :items="donaturs"
                   :search="search"
                   :rows-per-page-items="[10,20,50,100]"
                 >
                   <template slot="items" slot-scope="props">
+                    <td class="text-xs-left">{{ props.index+1 }}</td>
                     <td class="text-xs-left">{{ props.item.name }}</td>
-                    <td class="text-xs-left">{{ props.item.calories }}</td>
-                    <td class="text-xs-left">{{ props.item.fat }}</td>
-                    <td class="text-xs-left">{{ props.item.carbs }}</td>
-                    <td class="text-xs-left" v-if="props.item.protein===''"><v-btn color="info">Verifikasi</v-btn></td>
-                    <td class="text-xs-left" v-else>{{ props.item.protein }}</td>
+                    <td class="text-xs-left">{{ props.item.email }}</td>
+                    <td class="text-xs-left">{{ props.item.address.jalan }}</td>
+                    <td class="text-xs-left" v-if="props.item.donatur.verificationStatus==='not verified'"><v-btn color="info">Verifikasi</v-btn></td>
+                    <!-- <td class="text-xs-left" v-else>{{ props.item.protein }}</td> -->
                     <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->
                   </template>
                   <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -84,105 +84,120 @@
 </template>
 
 <script>
+import DonaturService from "@/services/DonaturService";
+
   export default {
     data: () => ({
       headers: [
-        { text: 'No', sortable: false, value: '' },
-          { text: 'Nama Donatur', value: 'name' },
-          { text: 'Email', value: 'email' },
-          { text: 'Alamat', value: 'prov' },
-          { text: 'Status', sortable: false, value: 'kab' },
+          { text: 'NO', sortable: false, value: '' },
+          { text: 'NAMA DONATUR', value: 'name' },
+          { text: 'EMAIL', value: 'email' },
+          { text: 'ALAMAT', value: 'prov' },
+          { text: '', sortable: false, value: 'kab' },
           // { text: 'Kecamatan', value: 'kec' },
           // { text: 'Desa', value: 'desa' },
           // { text: 'Action', sortable: false, value: 'action' }
         ],
-        desserts: [
-          {
-            name: '1',
-            calories: 'Hendrawan',
-            fat: 'hendra@hendra.id',
-            carbs: 'Jl. Bata 2',
-            protein: '',
-            iron: '1%'
-          },
-          {
-            name: '2',
-            calories: 'Yanti',
-            fat: 'yanyan@yanti.id',
-            carbs: 'Jl. Balok 3',
-            protein: 'Sudah Terverifikasi',
-            iron: '1%'
-          },
-          // {
-          //   name: 'Eclair',
-          //   calories: 262,
-          //   fat: 16.0,
-          //   carbs: 23,
-          //   protein: 6.0,
-          //   iron: '7%'
-          // },
-          // {
-          //   name: 'Cupcake',
-          //   calories: 305,
-          //   fat: 3.7,
-          //   carbs: 67,
-          //   protein: 4.3,
-          //   iron: '8%'
-          // },
-          // {
-          //   name: 'Gingerbread',
-          //   calories: 356,
-          //   fat: 16.0,
-          //   carbs: 49,
-          //   protein: 3.9,
-          //   iron: '16%'
-          // },
-          // {
-          //   name: 'Jelly bean',
-          //   calories: 375,
-          //   fat: 0.0,
-          //   carbs: 94,
-          //   protein: 0.0,
-          //   iron: '0%'
-          // },
-          // {
-          //   name: 'Lollipop',
-          //   calories: 392,
-          //   fat: 0.2,
-          //   carbs: 98,
-          //   protein: 0,
-          //   iron: '2%'
-          // },
-          // {
-          //   name: 'Honeycomb',
-          //   calories: 408,
-          //   fat: 3.2,
-          //   carbs: 87,
-          //   protein: 6.5,
-          //   iron: '45%'
-          // },
-          // {
-          //   name: 'Donut',
-          //   calories: 452,
-          //   fat: 25.0,
-          //   carbs: 51,
-          //   protein: 4.9,
-          //   iron: '22%'
-          // },
-          // {
-          //   name: 'KitKat',
-          //   calories: 518,
-          //   fat: 26.0,
-          //   carbs: 65,
-          //   protein: 7,
-          //   iron: '6%'
-          // }
-        ],
+        donaturs:[],
+        // desserts: [
+        //   {
+        //     name: '1',
+        //     calories: 'Hendrawan',
+        //     fat: 'hendra@hendra.id',
+        //     carbs: 'Jl. Bata 2',
+        //     protein: '',
+        //     iron: '1%'
+        //   },
+        //   {
+        //     name: '2',
+        //     calories: 'Yanti',
+        //     fat: 'yanyan@yanti.id',
+        //     carbs: 'Jl. Balok 3',
+        //     protein: 'Sudah Terverifikasi',
+        //     iron: '1%'
+        //   },
+        //   // {
+        //   //   name: 'Eclair',
+        //   //   calories: 262,
+        //   //   fat: 16.0,
+        //   //   carbs: 23,
+        //   //   protein: 6.0,
+        //   //   iron: '7%'
+        //   // },
+        //   // {
+        //   //   name: 'Cupcake',
+        //   //   calories: 305,
+        //   //   fat: 3.7,
+        //   //   carbs: 67,
+        //   //   protein: 4.3,
+        //   //   iron: '8%'
+        //   // },
+        //   // {
+        //   //   name: 'Gingerbread',
+        //   //   calories: 356,
+        //   //   fat: 16.0,
+        //   //   carbs: 49,
+        //   //   protein: 3.9,
+        //   //   iron: '16%'
+        //   // },
+        //   // {
+        //   //   name: 'Jelly bean',
+        //   //   calories: 375,
+        //   //   fat: 0.0,
+        //   //   carbs: 94,
+        //   //   protein: 0.0,
+        //   //   iron: '0%'
+        //   // },
+        //   // {
+        //   //   name: 'Lollipop',
+        //   //   calories: 392,
+        //   //   fat: 0.2,
+        //   //   carbs: 98,
+        //   //   protein: 0,
+        //   //   iron: '2%'
+        //   // },
+        //   // {
+        //   //   name: 'Honeycomb',
+        //   //   calories: 408,
+        //   //   fat: 3.2,
+        //   //   carbs: 87,
+        //   //   protein: 6.5,
+        //   //   iron: '45%'
+        //   // },
+        //   // {
+        //   //   name: 'Donut',
+        //   //   calories: 452,
+        //   //   fat: 25.0,
+        //   //   carbs: 51,
+        //   //   protein: 4.9,
+        //   //   iron: '22%'
+        //   // },
+        //   // {
+        //   //   name: 'KitKat',
+        //   //   calories: 518,
+        //   //   fat: 26.0,
+        //   //   carbs: 65,
+        //   //   protein: 7,
+        //   //   iron: '6%'
+        //   // }
+        // ],
       dialog: false,
+      search:''
       // drawer: null,
     }),
     props: {
       source: String
+    },
+    async mounted() {
+      try {
+        DonaturService.fetchDonatur().then(res => {
+          // this.count = res.data.count;
+          this.donaturs = res.data.donaturs;
+          console.log(this.donaturs);
+        });
+      } catch (error) {
+        this.error = error.response.data.error;
+      }
     }
   }
 </script>

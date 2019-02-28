@@ -94,6 +94,11 @@ export default {
         this.$store.dispatch('setId', response.data.data._id)
         this.$store.dispatch('setEmail', response.data.data.email)
         this.$store.dispatch('setName', response.data.data.name)
+        this.$store.dispatch('setAddress', response.data.data.address)
+        this.$store.dispatch('setPhone', response.data.data.phone)
+        this.$store.dispatch('setHomePhone', response.data.data.homePhone)
+        this.$store.dispatch('setGender', response.data.data.gender)
+        this.$store.dispatch('setBirthDate', response.data.data.birthDate)
         this.$router.push({name:'dashboard'})
         // this.$store.dispatch('setAddress', response.data.address)
         // this.$router.push({

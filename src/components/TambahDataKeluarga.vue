@@ -3,9 +3,15 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-btn slot="activator" color="#51B800" dark>Tambah Data</v-btn>
       <v-card>
-        <v-card-title>
+        <!-- <v-card-title>
           <span class="headline">Masukkan Data Keluarga Miskin</span>
-        </v-card-title>
+        </v-card-title> -->
+        <v-toolbar dark color="#51B800" flat>
+        <v-btn icon dark @click.native="dialog = !dialog">
+          <v-icon>close</v-icon>
+        </v-btn>
+        <v-toolbar-title>Masukkan Data Keluarga Miskin</v-toolbar-title>
+        </v-toolbar>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>

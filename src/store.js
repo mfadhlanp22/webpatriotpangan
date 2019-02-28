@@ -14,14 +14,18 @@ export default new Vuex.Store({
     name: null,
     profilePicture: null,
     address: null,
-    provinsi: null,
-    kabupaten: null,
-    kecamatan: null,
-    desa: null,
+    phone: null,
+    homePhone: null,
+    gender: null,
+    birthDate: null,
+    // provinsi: null,
+    // kabupaten: null,
+    // kecamatan: null,
+    // desa: null,
     isUserLoggedIn: false,
     drawer: true,
     item: null,
-    subItem: null,
+    subItem: null
   },
   mutations: {
     setToken(state, token) {
@@ -50,18 +54,30 @@ export default new Vuex.Store({
     setAddress(state, address) {
       state.address = address;
     },
-    setProvinsi(state, provinsi) {
-      state.provinsi = provinsi;
+    setPhone(state, phone) {
+      state.phone = phone;
     },
-    setKabupaten(state, kabupaten) {
-      state.kabupaten = kabupaten;
+    setHomePhone(state, homePhone) {
+      state.homePhone = homePhone;
     },
-    setKecamatan(state, kecamatan) {
-      state.kecamatan = kecamatan;
+    setGender(state, gender) {
+      state.gender = gender;
     },
-    setDesa(state, desa) {
-      state.desa = desa;
+    setBirthDate(state, birthDate) {
+      state.birthDate = birthDate;
     },
+    // setProvinsi(state, provinsi) {
+    //   state.provinsi = provinsi;
+    // },
+    // setKabupaten(state, kabupaten) {
+    //   state.kabupaten = kabupaten;
+    // },
+    // setKecamatan(state, kecamatan) {
+    //   state.kecamatan = kecamatan;
+    // },
+    // setDesa(state, desa) {
+    //   state.desa = desa;
+    // },
     setDrawer(state, drawer) {
       state.drawer = drawer;
     },
@@ -70,7 +86,7 @@ export default new Vuex.Store({
     },
     setSubItem(state, subItem) {
       state.subItem = subItem;
-    },
+    }
   },
   actions: {
     setToken({ commit }, token) {
@@ -94,18 +110,30 @@ export default new Vuex.Store({
     setAddress({ commit }, address) {
       commit("setAddress", address);
     },
-    setProvinsi({ commit }, provinsi) {
-      commit("setProvinsi", provinsi);
+    setPhone({ commit }, phone) {
+      commit("setPhone", phone);
     },
-    setKabupaten({ commit }, kabupaten) {
-      commit("setKabupaten", kabupaten);
+    setHomePhone({ commit }, homePhone) {
+      commit("setHomePhone", homePhone);
     },
-    setKecamatan({ commit }, kecamatan) {
-      commit("setKecamatan", kecamatan);
+    setGender({ commit }, gender) {
+      commit("setGender", gender);
     },
-    setDesa({ commit }, desa) {
-      commit("setDesa", desa);
+    setBirthDate({ commit }, birthDate) {
+      commit("setBirthDate", birthDate);
     },
+    // setProvinsi({ commit }, provinsi) {
+    //   commit("setProvinsi", provinsi);
+    // },
+    // setKabupaten({ commit }, kabupaten) {
+    //   commit("setKabupaten", kabupaten);
+    // },
+    // setKecamatan({ commit }, kecamatan) {
+    //   commit("setKecamatan", kecamatan);
+    // },
+    // setDesa({ commit }, desa) {
+    //   commit("setDesa", desa);
+    // },
     setDrawer({ commit }, drawer) {
       commit("setDrawer", drawer);
     },
@@ -114,6 +142,6 @@ export default new Vuex.Store({
     },
     setSubItem({ commit }, subItem) {
       commit("setSubItem", subItem);
-    },
+    }
   }
 });
