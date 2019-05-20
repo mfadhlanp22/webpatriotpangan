@@ -95,15 +95,18 @@
       </v-layout>
     </v-img> -->
     <v-list dense>
-      <v-list-tile avatar>
+      <v-list-tile class="pt-3 pb-3" avatar>
         <v-list-tile-avatar size="50">
-          <img src="https://lh5.googleusercontent.com/-E6nWyGPwFHM/AAAAAAAAAAI/AAAAAAAAAAc/kkPSXlMzCrs/s96-c/photo.jpg">
+          <img src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg">
         </v-list-tile-avatar>
         <v-list-tile-content>
           <v-list-tile-title v-text="$store.state.privilege[0]"></v-list-tile-title>
           <v-list-tile-title v-text="$store.state.name"></v-list-tile-title>
           <v-list-tile-title v-text="$store.state.email"></v-list-tile-title>
         </v-list-tile-content>
+        <!-- <v-btn flat icon>
+          <v-icon>mdi-square-edit-outline</v-icon>
+        </v-btn> -->
       </v-list-tile>
       <v-divider></v-divider>
     </v-list>
@@ -180,46 +183,70 @@
       //   { icon: 'keyboard', text: 'Go to the old version' }
       // ]
       items: [
+        // {
+        //   action: "dashboard",
+        //   title: "Dashboard",
+        //   to: "dashboard",
+        //   items: null
+        // },
         {
-          action: "dashboard",
-          title: "Dashboard",
-          to: "dashboard",
+          action: "mdi-format-list-checkbox",
+          title: "Campaign",
+          to: "campaigns",
           items: null
         },
         {
           action: "mdi-clipboard-check-outline",
-          title: "Verifikasi",
+          title: "Donatur",
           items: [
             {
-              title: "Patriot",
-              to: "verPatriot"
-            },
-            {
-              title: "Donatur",
+              title: "Data Donatur",
               to: "verDonatur"
-            }
+            },
+            // {
+            //   title: "Dana Diterima",
+            //   to: "verDonatur"
+            // },
+            // {
+            //   title: "Update Barang Diterima",
+            //   to: "verDonatur"
+            // }
           ]
         },
         {
           action: "mdi-format-list-checkbox",
-          title: "Data Keluarga Miskin",
-          to: "dataKeluargaMiskin",
-          items: null
-          // items: [
-          //   { 
-          //       title: "Produk UKM",
-          //       to: "ukmProduct"
-          //   },
-          //   { 
-          //       title: "Daftar UKM",
-          //       to: "ukmList"
-          //   },
-          //   { 
-          //       title: "Daftar Pengusaha",
-          //       to: "ukmListPengusaha"
-          //   }
-          // ]
-        }
+          title: "Keluarga Rawan Pangan",
+          // to: "dataKeluargaMiskin",
+          // items: null
+          items: [
+            { 
+                title: "Data Keluarga",
+                to: "dataKeluargaMiskin"
+            },
+            { 
+                title: "Penetapan Patriot",
+                to: "assignPatriot"
+            },
+          ]
+        },
+        {
+          action: "mdi-clipboard-check-outline",
+          title: "Patriot",
+          items: [
+            {
+              title: "Data Patriot",
+              to: "verPatriot"
+            },
+            // {
+            //   title: "Laporan Patriot",
+            //   to: "verPatriot"
+            // },
+            // {
+            //   title: "Reward Sukses",
+            //   to: "verPatriot"
+            // }
+          ]
+        },
       ],
       right: null
     }),

@@ -41,7 +41,7 @@
         <v-flex>
           <div class="white elevation-2">
             <div class="pl-4 pr-4 pt-2 pb-2">
-              <h1>Daftar Patriot yang belum di verifikasi</h1>
+              <h1>Data Patriot</h1>
             </div>
             <div class="pl-4 pr-4 pt-4 pb-4">
               <v-card>
@@ -59,18 +59,19 @@
                   :headers="headers"
                   :items="patriots"
                   :search="search"
+                  :custom-sort="customSort"
                   :rows-per-page-items="[10,20,50,100]"
                 >
                   <template slot="items" slot-scope="props">
-                    <td class="text-xs-left">{{ props.index+1 }}</td>
+                    <!-- <td class="text-xs-left">{{ count+1 }}</td> -->
                     <td class="text-xs-left">{{ props.item.name }}</td>
                     <td class="text-xs-left">{{ props.item.email }}</td>
-                    <td class="text-xs-left">{{ props.item.address.provinsi }}</td>
-                    <td class="text-xs-left">{{ props.item.address.kabupaten }}</td>
-                    <td class="text-xs-left">{{ props.item.address.kecamatan }}</td>
-                    <td class="text-xs-left">{{ props.item.address.desa }}</td>
-                    <td class="text-xs-left" v-if="props.item.patriot.isActive===false"><v-btn color="info">Verifikasi</v-btn></td>
-                    <!-- <td class="text-xs-left" v-else>{{ props.item.status }}</td> -->
+                    <td class="text-xs-left">{{ props.item.address.provinsi.provinsi }}</td>
+                    <td class="text-xs-left">{{ props.item.address.kabupaten.kabupaten }}</td>
+                    <td class="text-xs-left">{{ props.item.address.kecamatan.kecamatan }}</td>
+                    <td class="text-xs-left">{{ props.item.address.desa.desa }}</td>
+                    <td class="text-xs-left" v-if="props.item.patriot.isActive===false"><patriot-detail :patriotData="props.item"></patriot-detail></td>
+                    <td class="text-xs-left font-italic" v-else>Telah Terverifikasi</td>
                     <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->
                   </template>
                   <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -88,119 +89,66 @@
 
 <script>
 import PatriotService from "@/services/PatriotService";
+import PatriotDetail from "@/components/PatriotDetail";
 
   export default {
     data: () => ({
       headers: [
-          { text: 'NO', sortable: false, value: '' },
-          { text: 'NAMA PATRIOT', value: 'name' },
-          { text: 'EMAIL', value: 'email' },
-          { text: 'PROVINSI', value: 'prov' },
-          { text: 'KABUPATEN', value: 'kab' },
-          { text: 'KECAMATAN', value: 'kec' },
-          { text: 'DESA', value: 'desa' },
-          { text: '', sortable: false, value: 'action' }
+          // { text: 'NO', sortable: false },
+          { text: 'Nama Lengkap', value: 'name' },
+          { text: 'Email', value: 'email' },
+          { text: 'Provinsi', value: 'address.provinsi.provinsi' },
+          { text: 'Kota/Kabupaten', value: 'address.kabupaten.kabupaten' },
+          { text: 'Kecamatan', value: 'address.kecamatan.kecamatan' },
+          { text: 'Desa/Kelurahan', value: 'address.desa.desa' },
+          { text: 'Verifikasi Akun', value: 'patriot.isActive' }
         ],
-        patriots: [],
-        // desserts: [
-        //   {
-        //     name: '1',
-        //     calories: 'Rendy',
-        //     fat: 'rend@rendy.id',
-        //     carbs: 'DKI JAKARTA',
-        //     protein: 'JAKARTA TIMUR',
-        //     iron: 'PULO GADUNG',
-        //     desa: 'SUKARAJA',
-        //     status: ''
-        //   },
-        //   {
-        //     name: '2',
-        //     calories: 'Aisyah',
-        //     fat: 'aaa@aisyah.id',
-        //     carbs: 'JAWA BARAT',
-        //     protein: 'KABUPATEN BOGOR',
-        //     iron: 'DRAMAGA',
-        //     desa: 'SUKATANI',
-        //     status: 'Sudah Terverifikasi'
-        //   },
-        //   // {
-        //   //   name: 'Eclair',
-        //   //   calories: 262,
-        //   //   fat: 16.0,
-        //   //   carbs: 23,
-        //   //   protein: 6.0,
-        //   //   iron: '7%'
-        //   // },
-        //   // {
-        //   //   name: 'Cupcake',
-        //   //   calories: 305,
-        //   //   fat: 3.7,
-        //   //   carbs: 67,
-        //   //   protein: 4.3,
-        //   //   iron: '8%'
-        //   // },
-        //   // {
-        //   //   name: 'Gingerbread',
-        //   //   calories: 356,
-        //   //   fat: 16.0,
-        //   //   carbs: 49,
-        //   //   protein: 3.9,
-        //   //   iron: '16%'
-        //   // },
-        //   // {
-        //   //   name: 'Jelly bean',
-        //   //   calories: 375,
-        //   //   fat: 0.0,
-        //   //   carbs: 94,
-        //   //   protein: 0.0,
-        //   //   iron: '0%'
-        //   // },
-        //   // {
-        //   //   name: 'Lollipop',
-        //   //   calories: 392,
-        //   //   fat: 0.2,
-        //   //   carbs: 98,
-        //   //   protein: 0,
-        //   //   iron: '2%'
-        //   // },
-        //   // {
-        //   //   name: 'Honeycomb',
-        //   //   calories: 408,
-        //   //   fat: 3.2,
-        //   //   carbs: 87,
-        //   //   protein: 6.5,
-        //   //   iron: '45%'
-        //   // },
-        //   // {
-        //   //   name: 'Donut',
-        //   //   calories: 452,
-        //   //   fat: 25.0,
-        //   //   carbs: 51,
-        //   //   protein: 4.9,
-        //   //   iron: '22%'
-        //   // },
-        //   // {
-        //   //   name: 'KitKat',
-        //   //   calories: 518,
-        //   //   fat: 26.0,
-        //   //   carbs: 65,
-        //   //   protein: 7,
-        //   //   iron: '6%'
-        //   // }
-        // ],
+      patriots: [],
       dialog: false,
       search: '',
+      // count: 0
       // drawer: null,
     }),
+    methods: {
+      // customSort(items, index, isDescending) {
+      //   // The following is informations as far as I researched.
+      //   // items: 'food' items
+      //   // index: Enabled sort headers value. (black arrow status).
+      //   // isDescending: Whether enabled sort headers is desc
+      //   items.sort((a, b) => {
+      //       if (index === 'patriot.isActive') {
+      //         if (isDescending) {
+      //           return compare(b.patriot.isActive,a.patriot.isActive);
+      //         } else {
+      //           return compare(a.patriot.isActive,b.patriot.isActive);
+      //         }
+      //       } else {
+      //         if (isDescending) {
+      //           return a[index] < b[index] ? -1 : 1;
+      //         } else {
+      //           return b[index] < a[index] ? -1 : 1;
+      //         }
+      //       }
+      //   });
+      //   return items;
+      // }
+    },
+    components: {
+      PatriotDetail
+    },
     props: {
       source: String
+    },
+    created() {
+      store.dispatch("setItem", "Patriot");
+      store.dispatch("setSubItem", "verPatriot");
     },
     async mounted() {
       try {
         PatriotService.fetchPatriot().then(res => {
-          // this.count = res.data.count;
-          this.patriots = res.data.patriots;
-          console.log(this.patriots);
+          // this.count = res.data.patriots.length;
+          this.patriots = res.data.patriots.docs;
+          console.log(res.data.patriots.docs);
         });
       } catch (error) {
         this.error = error.response.data.error;

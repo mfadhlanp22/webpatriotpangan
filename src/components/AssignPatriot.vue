@@ -41,12 +41,11 @@
         <v-flex>
           <div class="white elevation-2">
             <div class="pl-4 pr-4 pt-2 pb-2">
-              <h1>Data Keluarga Rawan Pangan</h1>
+              <h1>Data Keluarga Yang Belum Dipantau</h1>
             </div>
             <div class="pl-4 pr-4 pt-4 pb-4">
               <v-card>
                 <v-card-title>
-                  <tambah-data></tambah-data>
                   <v-spacer></v-spacer>
                   <v-text-field
                     v-model="search"
@@ -61,6 +60,8 @@
                   :items="keluarga"
                   :search="search"
                   :rows-per-page-items="[10,20,50,100]"
+                  :expand="expand"
+                  item-key="_id"
                 >
                   <!-- <template slot="items" slot-scope="props"> -->
                   <template v-slot:items="props">
@@ -71,16 +72,13 @@
                       <td class="text-xs-left">{{ props.item.address.provinsiId.provinsi }}</td>
                       <td class="text-xs-left">{{ props.item.address.kabupatenId.kabupaten }}</td>
                       <td class="text-xs-left">{{ props.item.address.kecamatanId.kecamatan }}</td>
-                      <td class="text-xs-left">{{ props.item.address.desaId.desa }}</td>                      
-                      <!-- <td class="text-xs-left">{{ props.item.carbs }}</td> -->
-                      <td class="text-xs-left" v-if="props.item.patriotId!=null">{{ props.item.patriotId.name }}</td>
-                      <td class="text-xs-left" v-else>Belum Di Pantau</td>
-                      <td class="text-xs-left"><a @click="navigateTo({name: 'keluarga', params: {keluargaId: props.item._id}})">Lihat Detail</a></td>
+                      <td class="text-xs-left">{{ props.item.address.desaId.desa }}</td>
+                      <td class="text-xs-left"><a @click="props.expanded = !props.expanded; getPatriots(props.item);">Pilih Patriot</a></td>
                     <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->
                     </tr>
                   </template>
-                  <!-- <template v-slot:expand="props">
-                    <v-card flat>
+                  <template v-slot:expand="props">
+                    <v-card flat color="grey lighten-4">
                       <v-container>
                         <v-layout justify-center>
                           <v-flex xs12 md3>
@@ -97,10 +95,13 @@
                               solo
                             ></v-select>
                           </v-flex>
+                          <v-flex xs12 md3>
+                            <v-btn color="info" @click="addPatriot(); props.expanded = !props.expanded;">Simpan</v-btn>
+                          </v-flex>
                         </v-layout>
                       </v-container>
                     </v-card>
-                  </template> -->
+                  </template>
                   <v-alert slot="no-results" :value="true" color="error" icon="warning">
                     Your search for "{{ search }}" found no results.
                   </v-alert>
@@ -115,7 +116,7 @@
 </template>
 
 <script>
-import TambahData from "@/components/TambahDataKeluarga";
+// import TambahData from "@/components/TambahDataKeluarga";
 import KeluargaService from "@/services/KeluargaService";
 import PatriotService from "@/services/PatriotService";
 
@@ -129,117 +130,46 @@ import PatriotService from "@/services/PatriotService";
           { text: 'Kota/Kabupaten', value: 'address.kabupatenId.kabupaten' },
           { text: 'Kecamatan', value: 'address.kecamatanId.kecamatan' },
           { text: 'Desa/Kelurahan', value: 'address.desaId.desa' },
-          { text: 'Nama Patriot', value: 'patriotId.name' },
-          { text: '', sortable: false }
         ],
       keluarga: [],
       patriot: null,
       patriotlist: [],
       expand: false,
       search: '',
-      // address: [],
-        // desserts: [
-        //   {
-        //     name: '1',
-        //     calories: 'Supriyadi',
-        //     fat: 'Jl. Sukacita',
-        //     carbs: 'Taraf 1',
-        //     protein: 'Rendy',
-        //     // iron: '1%'
-        //   },
-        //   {
-        //     name: '2',
-        //     calories: 'Anton',
-        //     fat: 'Jl. Kenangan',
-        //     carbs: 'Taraf 2',
-        //     protein: 'Aisyah',
-        //     // iron: '1%'
-        //   },
-        //   // {
-        //   //   name: '3',
-        //   //   calories: 262,
-        //   //   fat: 16.0,
-        //   //   carbs: 23,
-        //   //   protein: 6.0,
-        //   //   iron: '7%'
-        //   // },
-        //   // {
-        //   //   name: '4',
-        //   //   calories: 305,
-        //   //   fat: 3.7,
-        //   //   carbs: 67,
-        //   //   protein: 4.3,
-        //   //   iron: '8%'
-        //   // },
-        //   // {
-        //   //   name: '5',
-        //   //   calories: 356,
-        //   //   fat: 16.0,
-        //   //   carbs: 49,
-        //   //   protein: 3.9,
-        //   //   iron: '16%'
-        //   // },
-        //   // {
-        //   //   name: '6',
-        //   //   calories: 375,
-        //   //   fat: 0.0,
-        //   //   carbs: 94,
-        //   //   protein: 0.0,
-        //   //   iron: '0%'
-        //   // },
-        //   // {
-        //   //   name: '7',
-        //   //   calories: 392,
-        //   //   fat: 0.2,
-        //   //   carbs: 98,
-        //   //   protein: 0,
-        //   //   iron: '2%'
-        //   // },
-        //   // {
-        //   //   name: '8',
-        //   //   calories: 408,
-        //   //   fat: 3.2,
-        //   //   carbs: 87,
-        //   //   protein: 6.5,
-        //   //   iron: '45%'
-        //   // },
-        //   // {
-        //   //   name: '9',
-        //   //   calories: 452,
-        //   //   fat: 25.0,
-        //   //   carbs: 51,
-        //   //   protein: 4.9,
-        //   //   iron: '22%'
-        //   // },
-        //   // {
-        //   //   name: '10',
-        //   //   calories: 518,
-        //   //   fat: 26.0,
-        //   //   carbs: 65,
-        //   //   protein: 7,
-        //   //   iron: '6%'
-        //   // }
-        // ],
-      dialog: false,
-      // drawer: null,
+      idKeluarga: null
     }),
+    // props: ["patriotAssignData"],
     methods: {
-      getPatriots(data) {
-        console.log(data);
-        PatriotService.fetchAssignPatriot(data).then(res => {
+      async getPatriots(data) {
+        const desa = data.address.desaId._id;
+        const kecamatan = data.address.kecamatanId._id;
+        const kabupaten = data.address.kabupatenId._id;
+        const provinsi = data.address.provinsiId._id;
+        this.idKeluarga = data._id;
+        console.log(this.idKeluarga);
+        await PatriotService.fetchAssignPatriot(desa,kecamatan,kabupaten,provinsi).then(res => {
           this.patriotlist = res.data.patriots.docs;
-          console.log(this.res);
+          console.log(this.patriot);
         });
       },
-      navigateTo (route) {
-        this.$router.push(route)
+      async addPatriot() {
+        KeluargaService.assignPatriot({
+          _id: this.idKeluarga,
+          patriotId: this.patriot,          
+        });
+        // this.expand = false;
       },
     },
     async mounted() {
       try {
         KeluargaService.fetchKeluarga().then(res => {
           // this.count = res.data.patriots.length;
-          this.keluarga = res.data.keluargas.docs;
+          const item = res.data.keluargas.docs;
+          item.forEach(v => {
+            if(v.patriotId==null){
+              this.keluarga.push(v)
+            }
+          });
           console.log(this.keluarga);
         });
         // KeluargaService.getAddress(this.keluarga.address.desaId).then(res => {
@@ -251,7 +181,7 @@ import PatriotService from "@/services/PatriotService";
       }
     },
     components: {
-      TambahData
+      
     },
     props: {
       source: String

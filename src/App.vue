@@ -26,7 +26,6 @@
 // import HelloWorld from './components/HelloWorld'
 import PageHeader from "@/components/Header.vue";
 import Navbar from "@/components/Navbar.vue";
-
 export default {
   name: 'App',
   components: {

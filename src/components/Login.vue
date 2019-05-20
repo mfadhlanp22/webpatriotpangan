@@ -99,7 +99,7 @@ export default {
         this.$store.dispatch('setHomePhone', response.data.data.homePhone)
         this.$store.dispatch('setGender', response.data.data.gender)
         this.$store.dispatch('setBirthDate', response.data.data.birthDate)
-        this.$router.push({name:'dashboard'})
+        this.$router.push({name:'home'})
         // this.$store.dispatch('setAddress', response.data.address)
         // this.$router.push({
         //   name: 'dashboard'

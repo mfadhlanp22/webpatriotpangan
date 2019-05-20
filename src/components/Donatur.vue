@@ -41,7 +41,7 @@
         <v-flex>
           <div class="white elevation-2">
             <div class="pl-4 pr-4 pt-2 pb-2">
-              <h1>Daftar Donatur</h1>
+              <h1>Data Donatur</h1>
             </div>
             <div class="pl-4 pr-4 pt-4 pb-4">
               <v-card>
@@ -62,13 +62,14 @@
                   :rows-per-page-items="[10,20,50,100]"
                 >
                   <template slot="items" slot-scope="props">
-                    <td class="text-xs-left">{{ props.index+1 }}</td>
+                    <!-- <td class="text-xs-left">{{ props.index+1 }}</td> -->
                     <td class="text-xs-left">{{ props.item.name }}</td>
                     <td class="text-xs-left">{{ props.item.email }}</td>
                     <td class="text-xs-left">{{ props.item.address.jalan }}</td>
-                    <td class="text-xs-left" v-if="props.item.donatur.verificationStatus==='not verified'"><v-btn color="info">Verifikasi</v-btn></td>
-                    <!-- <td class="text-xs-left" v-else>{{ props.item.protein }}</td> -->
-                    <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->
+                    <!-- <td class="text-xs-left"><v-btn color="info">Verifikasi</v-btn></td> -->
+                    <td class="text-xs-left" v-if="props.item.donatur.verificationStatus==='not verified'"><donatur-detail :donaturData="props.item"></donatur-detail></td>
+                    <td class="text-xs-left font-italic" v-else-if="props.item.donatur.verificationStatus==='rejected'">Ditolak</td>
+                    <td class="text-xs-left font-italic" v-else>Telah Terverifikasi</td>
                   </template>
                   <v-alert slot="no-results" :value="true" color="error" icon="warning">
                     Your search for "{{ search }}" found no results.
@@ -85,108 +86,60 @@
 
 <script>
 import DonaturService from "@/services/DonaturService";
+import DonaturDetail from "@/components/DonaturDetail";
+import store from "@/store.js"
+
 
   export default {
     data: () => ({
       headers: [
-          { text: 'NO', sortable: false, value: '' },
-          { text: 'NAMA DONATUR', value: 'name' },
-          { text: 'EMAIL', value: 'email' },
-          { text: 'ALAMAT', value: 'prov' },
-          { text: '', sortable: false, value: 'kab' },
+          // { text: 'NO', sortable: false, value: '' },
+          { text: 'Nama Lengkap', value: 'name' },
+          { text: 'Email', value: 'email' },
+          { text: 'Alamat', value: 'address.jalan' },
+          { text: 'Verifikasi Akun', value: 'donatur.verificationStatus' },
           // { text: 'Kecamatan', value: 'kec' },
           // { text: 'Desa', value: 'desa' },
           // { text: 'Action', sortable: false, value: 'action' }
         ],
-        donaturs:[],
-        // desserts: [
-        //   {
-        //     name: '1',
-        //     calories: 'Hendrawan',
-        //     fat: 'hendra@hendra.id',
-        //     carbs: 'Jl. Bata 2',
-        //     protein: '',
-        //     iron: '1%'
-        //   },
-        //   {
-        //     name: '2',
-        //     calories: 'Yanti',
-        //     fat: 'yanyan@yanti.id',
-        //     carbs: 'Jl. Balok 3',
-        //     protein: 'Sudah Terverifikasi',
-        //     iron: '1%'
-        //   },
-        //   // {
-        //   //   name: 'Eclair',
-        //   //   calories: 262,
-        //   //   fat: 16.0,
-        //   //   carbs: 23,
-        //   //   protein: 6.0,
-        //   //   iron: '7%'
-        //   // },
-        //   // {
-        //   //   name: 'Cupcake',
-        //   //   calories: 305,
-        //   //   fat: 3.7,
-        //   //   carbs: 67,
-        //   //   protein: 4.3,
-        //   //   iron: '8%'
-        //   // },
-        //   // {
-        //   //   name: 'Gingerbread',
-        //   //   calories: 356,
-        //   //   fat: 16.0,
-        //   //   carbs: 49,
-        //   //   protein: 3.9,
-        //   //   iron: '16%'
-        //   // },
-        //   // {
-        //   //   name: 'Jelly bean',
-        //   //   calories: 375,
-        //   //   fat: 0.0,
-        //   //   carbs: 94,
-        //   //   protein: 0.0,
-        //   //   iron: '0%'
-        //   // },
-        //   // {
-        //   //   name: 'Lollipop',
-        //   //   calories: 392,
-        //   //   fat: 0.2,
-        //   //   carbs: 98,
-        //   //   protein: 0,
-        //   //   iron: '2%'
-        //   // },
-        //   // {
-        //   //   name: 'Honeycomb',
-        //   //   calories: 408,
-        //   //   fat: 3.2,
-        //   //   carbs: 87,
-        //   //   protein: 6.5,
-        //   //   iron: '45%'
-        //   // },
-        //   // {
-        //   //   name: 'Donut',
-        //   //   calories: 452,
-        //   //   fat: 25.0,
-        //   //   carbs: 51,
-        //   //   protein: 4.9,
-        //   //   iron: '22%'
-        //   // },
-        //   // {
-        //   //   name: 'KitKat',
-        //   //   calories: 518,
-        //   //   fat: 26.0,
-        //   //   carbs: 65,
-        //   //   protein: 7,
-        //   //   iron: '6%'
-        //   // }
-        // ],
+      donaturs:[],
       dialog: false,
       search:''
       // drawer: null,
     }),
+    components: {
+      DonaturDetail
+    },
+    methods: {
+      // customSort(items, index, isDescending) {
+      //   // The following is informations as far as I researched.
+      //   // items: 'food' items
+      //   // index: Enabled sort headers value. (black arrow status).
+      //   // isDescending: Whether enabled sort headers is desc
+      //   items.sort((a, b) => {
+      //       if (index === 'donatur.verificationStatus') {
+      //         if (isDescending) {
+      //           return compare(b.donatur.verificationStatus,a.donatur.verificationStatus);
+      //         } else {
+      //           return compare(a.donatur.verificationStatus,b.donatur.verificationStatus);
+      //         }
+      //       } else {
+      //         if (isDescending) {
+      //           return a[index] < b[index] ? -1 : 1;
+      //         } else {
+      //           return b[index] < a[index] ? -1 : 1;
+      //         }
+      //       }
+      //   });
+      //   return items;
+      // }
+    },
     props: {
       source: String
+    },
+    created() {
+      store.dispatch("setItem", "Donatur");
+      store.dispatch("setSubItem", "verDonatur");
     },
     async mounted() {
       try {
