@@ -105,8 +105,9 @@
         </v-flex>
         <v-flex xs12 sm6>
           <v-subheader>Foto Kerawanan :</v-subheader>
-          <upload-btn multiple='true' title="Upload Foto"></upload-btn>
-          <!-- <v-text-field
+          <!-- <upload-btn ref="button" multiple='true' title="Upload Foto"></upload-btn>
+          <button @click="$refs.button.clear()"></button> -->
+          <v-text-field
             label="Pilih Gambar"
             @click="onPickFile"
             v-model="imageName"
@@ -123,7 +124,7 @@
             @change="onFilePicked"
             multiple
           >
-          <v-dialog v-model="dialog" max-width="290">
+          <!-- <v-dialog v-model="dialog" max-width="290">
             <v-card>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -131,10 +132,9 @@
               </v-card-actions>
             </v-card>
           </v-dialog> -->
-          <!-- <v-flex xs3 v-for="url in imageUrl"
-              :key="url"> -->
-            <!-- <img class="pl-3" :src="imageUrl" height="150" v-if="imageUrl"> -->
-          <!-- </v-flex> -->
+          <!-- <v-flex xs3>
+            <img class="pl-3" :src="imageUrl" height="150" v-if="imageUrl">
+          </v-flex> -->
         </v-flex>
         <v-flex>
           <v-layout row wrap>
@@ -190,8 +190,8 @@ import UploadButton from 'vuetify-upload-button'
       kecamatanlist: [],
       desalist: [],
       imageName: "",
-      imageUrl: "",
-      imageFile: "",
+      imageUrl: [],
+      imageFile: [],
       valid: false,
       lamaCampaign: '',
       idCampaign:'',          
@@ -200,9 +200,9 @@ import UploadButton from 'vuetify-upload-button'
       kodePos: '',
       jalan: ''
     }),
-    components: {
-      'upload-btn': UploadButton
-    },
+    // components: {
+    //   'upload-btn': UploadButton
+    // },
     methods: {
       onPickFile() {
         this.$refs.image.click()
@@ -210,79 +210,75 @@ import UploadButton from 'vuetify-upload-button'
       onFilePicked(e) {
         const files = e.target.files;
         console.log(files);
-        // for( var i = 0; i < files.length; i++ ){
-          if (files[0] !== undefined) {
-            this.imageName = files[0].name;
+        for( var i = 0; i < files.length; i++ ){
+          if (files[i] !== undefined) {
+            this.imageName = files[i].name;
             if (this.imageName.lastIndexOf(".") <= 0) {
               return;
             }
+            this.imageFile.push(files[i]);
+
             const fr = new FileReader();
-            fr.readAsDataURL(files[0]);
+            fr.readAsDataURL(files[i]);
             fr.addEventListener("load", () => {
               this.imageUrl = fr.result;
-              this.imageFile = files[0]; // this is an image file that can be sent to server...
-              console.log(this.imageUrl);
-              console.log(this.imageFile);
             });
           } else {
             this.imageName = "";
-            this.imageFile = "";
+            this.imageFile = null;
             this.imageUrl = "";
           }
-        // }
+        }
         // console.log(this.file)
       },
       async buatCampaign() {
         try {
-          // let formData = new FormData()
-          // formData.append('judulCampaign', this.judul)
-          // formData.append('lamaCampaign', this.lamaCampaign)
-          // formData.append('deskripsi', this.deskripsi)
-          // formData.append('targetDana', this.targetDonasi)
-          // formData.append('rekomendasiBarang', this.rekomendasiBarang)
-          // formData.append('urlVideoCampaign', this.videoLink)
-          // formData.append('provinsiId', this.provinsi._id)
-          // formData.append('namaProvinsi', this.provinsi.provinsi)
-          // formData.append('kabupatenId', this.kabupaten._id)
-          // formData.append('namaKabupaten', this.kabupaten.kabupaten)
-          // formData.append('kecamatanId', this.kecamatan._id)
-          // formData.append('namaKecamatan', this.kecamatan.kecamatan)
-          // formData.append('desaId', this.desa._id)
-          // formData.append('namaDesa', this.desa.desa)
-          // formData.append('kodePos', this.kodePos)
-          // formData.append('jalan', this.jalan)
+          let formData = new FormData()
+          formData.append('judulCampaign', this.judul)
+          formData.append('lamaCampaign', this.lamaCampaign)
+          formData.append('deskripsi', this.deskripsi)
+          formData.append('targetDana', this.targetDonasi)
+          formData.append('rekomendasiBarang', this.rekomendasiBarang)
+          formData.append('urlVideoCampaign', this.videoLink)
+          formData.append('provinsiId', this.provinsi._id)
+          formData.append('namaProvinsi', this.provinsi.provinsi)
+          formData.append('kabupatenId', this.kabupaten._id)
+          formData.append('namaKabupaten', this.kabupaten.kabupaten)
+          formData.append('kecamatanId', this.kecamatan._id)
+          formData.append('namaKecamatan', this.kecamatan.kecamatan)
+          formData.append('desaId', this.desa._id)
+          formData.append('namaDesa', this.desa.desa)
+          formData.append('kodePos', this.kodePos)
+          formData.append('jalan', this.jalan)
           // console.log(this.imageFile, this.title, this.organizer, this.date, this.location, this.description)
           console.log(this.imageFile)
-          // await CampaignService.createCampaign({
-          //   judulCampaign: this.judul,
-          //   lamaCampaign: this.lamaCampaign,
-          //   deskripsi: this.deskripsi,
-          //   targetDana: this.targetDonasi,
-          //   rekomendasiBarang: this.rekomendasiBarang,
-          //   urlVideoCampaign: this.videoLink,
-          //   provinsiId: this.provinsi._id,
-          //   namaProvinsi: this.provinsi.provinsi,
-          //   kabupatenId: this.kabupaten._id,
-          //   namaKabupaten: this.kabupaten.kabupaten,
-          //   kecamatanId: this.kecamatan._id,
-          //   namaKecamatan: this.kecamatan.kecamatan,
-          //   desaId: this.desa._id,
-          //   namaDesa: this.desa.desa,
-          //   kodePos: this.kodePos,
-          //   jalan: this.jalan,
-          // }).then(response => {
-          //   console.log(response.data)
-          //   this.idCampaign = response.data.campaign._id
-          // })
-          let formData = new FormData()
-            formData.append('fotoCampaign', this.imageFile) 
-            for(var pair of formData.entries()) {
-              console.log(pair[0]+ ', '+ pair[1]); 
-            }
-            // console.log(formData)
-            await CampaignService.uploadFoto("5ca364632268ca6d9917eede", {formData}).then(res => {
-              console.log(res.data)
-            })
+          const response = await CampaignService.createCampaign({
+            judulCampaign: this.judul,
+            lamaCampaign: this.lamaCampaign,
+            deskripsi: this.deskripsi,
+            targetDana: this.targetDonasi,
+            rekomendasiBarang: this.rekomendasiBarang,
+            urlVideoCampaign: this.videoLink,
+            provinsiId: this.provinsi._id,
+            namaProvinsi: this.provinsi.provinsi,
+            kabupatenId: this.kabupaten._id,
+            namaKabupaten: this.kabupaten.kabupaten,
+            kecamatanId: this.kecamatan._id,
+            namaKecamatan: this.kecamatan.kecamatan,
+            desaId: this.desa._id,
+            namaDesa: this.desa.desa,
+            kodePos: this.kodePos,
+            jalan: this.jalan,
+          });
+
+          console.log(response.data)
+          this.idCampaign = response.data.campaign._id
+          
+          let imageData = new FormData()
+          for(var i = 0; i < this.imageFile.length; i++) {
+            imageData.append('fotoCampaign', new Blob([this.imageFile[i]], { type: "image/" + this.imageFile[i].name.split(".")[1]}), this.imageFile[i].name)
+          }
+          await CampaignService.uploadFoto(this.idCampaign, imageData);
           this.$router.push({name:'home'})
         } catch (error) {
           this.error = error.response.data.error;

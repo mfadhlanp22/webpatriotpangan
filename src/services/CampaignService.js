@@ -12,8 +12,8 @@ export default {
       }
     });
   },
-  uploadFoto(id, credential) {
-    return Api().post("campaign/upload/" + id, credential, {
+  uploadFoto(id, image) {
+    return Api().post("campaign/upload/" + id, image, {
       headers: {
         Authorization: "Bearer " + store.state.token,
         "Content-Type": `multipart/form-data`
@@ -26,6 +26,14 @@ export default {
   fetchCampaign() {
     return Api().get(
       "campaign/?populateUser=true&populateAddress=true&limit=20&page=1",
+      {
+        headers: { Authorization: "Bearer " + store.state.token }
+      }
+    );
+  },
+  getCampaignById(id) {
+    return Api().get(
+      "campaign/id/" + id + "?populateUser=true&populateAddress=true",
       {
         headers: { Authorization: "Bearer " + store.state.token }
       }

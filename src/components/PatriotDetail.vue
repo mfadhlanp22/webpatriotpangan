@@ -1,6 +1,7 @@
 <template>
   <v-layout>
-    <a @click="dialog = true">Verifikasi</a>
+    <a v-if="patriotData.patriot.isActive==false" @click="dialog = true">Verifikasi</a>
+    <a v-else @click="dialog = true">Lihat Detail</a>
     <v-dialog v-model="dialog" persistent max-width="700px">
       <v-card>
         <!-- <v-card-title>
@@ -152,8 +153,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" @click="dialog = false">Batal</v-btn>
-          <v-btn dark color="#51B800" @click="verifPatriot(patriotData._id,patriotData)">Verifikasi</v-btn>
+          <v-btn color="error" v-if="patriotData.patriot.isActive==false" @click="dialog = false">Batal</v-btn>
+          <v-btn color="error" v-else @click="deactivatePatriot(patriotData._id)">Non-Aktifkan</v-btn>
+          <v-btn dark color="#51B800" v-show="patriotData.patriot.isActive==false" @click="verifPatriot(patriotData._id,patriotData)">Verifikasi</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -169,9 +171,22 @@ import PatriotService from "@/services/PatriotService";
     }),
     props: ["patriotData"],
     methods: {
-      verifPatriot(patriotId,item) {
+      verifPatriot(patriotId) {
         try {
           PatriotService.activatePatriot(patriotId).then(res => {
+            // const index = this.patriotData.indexOf(item)
+            // this.patriotData.splice(index, 1)
+            this.dialog = false
+            // this.$router.push({name:'verPatriot'})
+          })
+        }
+        catch(error) {
+          this.error = error.response
+        }
+      },
+      deactivatePatriot(patriotId) {
+        try {
+          PatriotService.deactivatePatriot(patriotId).then(res => {
             // const index = this.patriotData.indexOf(item)
             // this.patriotData.splice(index, 1)
             this.dialog = false

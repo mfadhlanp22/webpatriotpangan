@@ -71,7 +71,7 @@
                     <td class="text-xs-left">{{ props.item.address.kecamatan.kecamatan }}</td>
                     <td class="text-xs-left">{{ props.item.address.desa.desa }}</td>
                     <td class="text-xs-left" v-if="props.item.patriot.isActive===false"><patriot-detail :patriotData="props.item"></patriot-detail></td>
-                    <td class="text-xs-left font-italic" v-else>Telah Terverifikasi</td>
+                    <td class="text-xs-left" v-else><patriot-detail :patriotData="props.item"></patriot-detail></td>
                     <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->
                   </template>
                   <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -110,6 +110,19 @@ import PatriotDetail from "@/components/PatriotDetail";
       // drawer: null,
     }),
     methods: {
+      // deactivatePatriot(patriotId) {
+      //   try {
+      //     PatriotService.deactivatePatriot(patriotId).then(res => {
+      //       // const index = this.patriotData.indexOf(item)
+      //       // this.patriotData.splice(index, 1)
+      //       // this.dialog = false
+      //       // this.$router.push({name:'verPatriot'})
+      //     })
+      //   }
+      //   catch(error) {
+      //     this.error = error.response
+      //   }
+      // }
       // customSort(items, index, isDescending) {
       //   // The following is informations as far as I researched.
       //   // items: 'food' items

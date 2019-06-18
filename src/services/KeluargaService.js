@@ -8,8 +8,8 @@ export default {
   addKeluarga(data) {
     return Api().post("keluarga-miskin/upload/excel", data, {
       headers: {
-        Authorization: "Bearer " + store.state.token
-        // "Content-Type": `multipart/form-data`
+        Authorization: "Bearer " + store.state.token,
+        "Content-Type": `multipart/form-data`
       }
     });
   },
@@ -19,12 +19,17 @@ export default {
     });
   },
   fetchKeluarga() {
-    return Api().get("keluarga-miskin/all?populateAddress=true&populatePatriot=true&patriotAttribute=name&limit=10&page=1", {
+    return Api().get("keluarga-miskin/all?populateAddress=true&populatePatriot=true&patriotAttribute=name&limit=40&page=1", {
       headers: { Authorization: "Bearer " + store.state.token }
     });
   },
   getKeluargaById(keluargaId) {
     return Api().get("keluarga-miskin/id/" + keluargaId + "?populateAddress=true&populatePatriot=true", {
+      headers: { Authorization: "Bearer " + store.state.token }
+    });
+  },
+  getLaporanById(keluargaId) {
+    return Api().get("laporan/keluarga-miskin/gets/keluargaId/" + keluargaId + "?limit=5&page=1", {
       headers: { Authorization: "Bearer " + store.state.token }
     });
   },

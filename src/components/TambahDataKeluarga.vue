@@ -26,6 +26,7 @@
                 type="file"
                 style="display: none"
                 ref="file"
+                accept=".csv"
                 @change="onFilePicked"
               />
               <v-subheader>{{filename}}</v-subheader>
@@ -160,6 +161,7 @@
 
 <script>
 import KeluargaService from '@/services/KeluargaService'
+import { type } from 'os';
 
   export default {
     data: () => ({
@@ -183,11 +185,12 @@ import KeluargaService from '@/services/KeluargaService'
     methods: {
       async addKeluarga() {
         try{
-          let formData = new FormData()
-          formData.append('dataKeluargaMiskin', this.file)
+          let excelData = new FormData()
+          excelData.append('dataKeluargaMiskin', new Blob([this.file], {type : 'text/csv'}))
           // console.log(this.imageFile, this.title, this.organizer, this.date, this.location, this.description)
-          await KeluargaService.addKeluarga(formData).then(response => {
+          await KeluargaService.addKeluarga(excelData).then(response => {
             console.log(response.data)
+            this.dialog = false
           })
         } catch (error) {
           this.error = error.response.data.error;
@@ -204,10 +207,11 @@ import KeluargaService from '@/services/KeluargaService'
           if (this.filename.lastIndexOf('.') <= 0) {
             return alert('Please add a valid file!')
           }
-          const fr = new FileReader()
-          fr.addEventListener("load", () => {
-            this.file = files[0]; // this is an image file that can be sent to server...
-          });
+          this.file = files[0];
+          // const fr = new FileReader()
+          // fr.addEventListener("load", () => {
+          //    // this is an image file that can be sent to server...
+          // });
         } else {
           this.file = ''
           this.filename = ''

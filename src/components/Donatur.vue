@@ -111,6 +111,19 @@ import store from "@/store.js"
       DonaturDetail
     },
     methods: {
+      getDonatur() {
+        this.donaturs = DonaturService.fetchDonatur().then(res => {
+          // this.count = res.data.count;
+          this.donaturs = res.data.donaturs;
+          console.log(this.donaturs);
+        });
+      // } catch (error) {
+      //   this.error = error.response.data.error;
+      // }
+      },
+      initialize() {
+        this.getDonatur();
+      }
       // customSort(items, index, isDescending) {
       //   // The following is informations as far as I researched.
       //   // items: 'food' items
@@ -140,17 +153,18 @@ import store from "@/store.js"
     created() {
       store.dispatch("setItem", "Donatur");
       store.dispatch("setSubItem", "verDonatur");
+      this.initialize()
     },
-    async mounted() {
-      try {
-        DonaturService.fetchDonatur().then(res => {
-          // this.count = res.data.count;
-          this.donaturs = res.data.donaturs;
-          console.log(this.donaturs);
-        });
-      } catch (error) {
-        this.error = error.response.data.error;
-      }
-    }
+    // async mounted() {
+    //   try {
+    //     DonaturService.fetchDonatur().then(res => {
+    //       // this.count = res.data.count;
+    //       this.donaturs = res.data.donaturs;
+    //       console.log(this.donaturs);
+    //     });
+    //   } catch (error) {
+    //     this.error = error.response.data.error;
+    //   }
+    // }
   }
 </script>

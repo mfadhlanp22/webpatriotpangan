@@ -78,7 +78,7 @@
                       <td class="text-xs-left font-italic" v-else-if="props.item.isDone==false && props.item.isVerified=='true'">Sedang Berlangsung</td>
                       <td class="text-xs-left" v-else> Selesai </td>
                       <!-- <td class="text-xs-left">{{ props.item.s }}</td> -->
-                      <td class="text-xs-left" v-if="props.item.isVerified=='false'"><verif-campaign :campaignData="props.item"/></td>
+                      <td class="text-xs-left" v-if="props.item.isVerified=='false'"><verif-campaign :campaignData="props.item" :campaignFoto="props.item.fotoCampaign"/></td>
                       <td class="text-xs-left font-italic" v-else-if="props.item.isVerified=='true'"> Telah Terverifikasi </td>
                       <td class="text-xs-left font-italic" v-else> Ditolak </td>
                     <!-- <td class="text-xs-left"><ukm-detail :businessData="props.item"></ukm-detail></td> -->

@@ -32,10 +32,17 @@
                 </v-avatar>
               </v-flex> -->
               <v-flex
-                xs3
+                xs6
                 text-xs-center
                 class="pa-2"
               >
+              <v-carousel height=380>
+                <v-carousel-item
+                  v-for="(item,i) in campaignFoto"
+                  :key="i"
+                  :src="`http://ci.apps.cs.ipb.ac.id/patriotpangan/api/campaign/images/${item}`"
+                ></v-carousel-item>
+              </v-carousel>
               <!-- v-for="(n,index) in campaignData.fotoCampaign"
                 :key="index" -->
                 <!-- <v-avatar
@@ -44,21 +51,6 @@
                 > -->
                   <!-- <v-img :src="`http://ci.apps.cs.ipb.ac.id/patriotpangan/api/campaign/images/${this.campaignData.fotoCampaign}`">
                   </v-img> -->
-                <v-img
-                  src="http://kabarsiar.id/wp-content/uploads/2017/11/sawah-kering-1024x597.jpg"
-                >
-                </v-img>
-                <!-- </v-avatar> -->
-              </v-flex>
-              <v-flex
-                xs3
-                text-xs-center
-                class="pa-2"
-              >
-                <v-img
-                  src="http://kabarsiar.id/wp-content/uploads/2017/11/sawah-kering-1024x597.jpg"
-                >
-                </v-img>
                 <!-- </v-avatar> -->
               </v-flex>
               <v-flex xs6>
@@ -77,53 +69,24 @@
                       <!-- <v-list-tile-action-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</v-list-tile-action-text> -->
                     </v-list-tile-content>
                   </v-list-tile>
-                </v-list>
-              </v-flex>
-            </v-layout>
-            <v-layout>
-              <v-flex
-                xs3
-                text-xs-center
-                class="pl-2"
-              >
-                <v-img
-                  src="http://kabarsiar.id/wp-content/uploads/2017/11/sawah-kering-1024x597.jpg"
-                >
-                </v-img>
-                <!-- </v-avatar> -->
-              </v-flex>
-              <v-flex
-                xs3
-                text-xs-center
-                class="pl-2"
-              >
-                <v-img
-                  src="http://kabarsiar.id/wp-content/uploads/2017/11/sawah-kering-1024x597.jpg"
-                >
-                </v-img>
-                <!-- </v-avatar> -->
-              </v-flex>
-              <v-flex xs6>
-                <v-list two-line>
-                 <v-list-tile avatar class="pl-5">
+                  <v-list-tile avatar class="pl-5">
                     <v-list-tile-content>
                       <v-list-tile-title class="font-weight-bold">Target Donasi</v-list-tile-title>
                       <v-list-tile-action-text class="headline">Rp. {{campaignData.targetDana}}</v-list-tile-action-text>
                       <!-- <v-list-tile-action-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</v-list-tile-action-text> -->
                     </v-list-tile-content>
                   </v-list-tile>
-                  <!-- <v-list-tile avatar class="pl-5">
-                    <v-list-tile-content>
-                      <v-list-tile-title class="font-weight-bold">Tanggal Mulai Campaign</v-list-tile-title>
-                      <v-list-tile-action-text class="headline">{{campaignData.dateStart.split("T")[0]}}</v-list-tile-action-text> -->
-                      <!-- <v-list-tile-action-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</v-list-tile-action-text> -->
-                    <!-- </v-list-tile-content> -->
-                  <!-- </v-list-tile> -->
                   <v-list-tile avatar class="pl-5">
                     <v-list-tile-content>
                       <v-list-tile-title class="font-weight-bold">Batas Periode Campaign</v-list-tile-title>
                       <v-list-tile-action-text class="headline">{{campaignData.dateFinish.split("T")[0]}}</v-list-tile-action-text>
                       <!-- <v-list-tile-action-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</v-list-tile-action-text> -->
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile avatar class="pl-5">
+                    <v-list-tile-content>
+                      <v-list-tile-title class="font-weight-bold">Rekomendasi Barang</v-list-tile-title>
+                      <v-list-tile-action-text v-for="(item,i) in campaignData.rekomendasiBarang" :key="i">{{item}}</v-list-tile-action-text>
                     </v-list-tile-content>
                   </v-list-tile>
                 </v-list>
@@ -188,9 +151,10 @@ import CampaignService from "@/services/CampaignService";
 
   export default {
     data: () => ({
-      dialog: false
+      dialog: false,
+      foto: []
     }),
-    props: ["campaignData"],
+    props: ["campaignData","campaignFoto"],
     methods: {
       verifyCampaign(campaignId) {
         try {
@@ -222,7 +186,18 @@ import CampaignService from "@/services/CampaignService";
         this.dialog = true
       },
 
-    }
+    },
+    // async mounted() {
+    //   try {
+    //     CampaignService.getCampaignById(campaignData._id).then(res => {
+    //       // this.count = res.data.patriots.length;
+    //       this.foto = res.data.campaign.fotoCampaign;
+    //       console.log(this.campaigns);
+    //     });
+    //   } catch (error) {
+    //     this.error = error.response.data.error;
+    //   }
+    // }
   }
   
 </script>
