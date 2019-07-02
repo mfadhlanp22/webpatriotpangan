@@ -20,7 +20,7 @@
                 raised
                 @click="onPickFile"
               >
-                Upload File
+                Pilih Berkas
               </v-btn>
               <input
                 type="file"
@@ -30,6 +30,9 @@
                 @change="onFilePicked"
               />
               <v-subheader>{{filename}}</v-subheader>
+            </v-flex>
+            <v-flex>
+              <v-subheader>(Format Berkas: .csv)</v-subheader>
             </v-flex>
           <!-- <v-container grid-list-md>
             <v-layout wrap>
